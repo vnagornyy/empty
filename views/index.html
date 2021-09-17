@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <v-app>
+        <v-main>
+            <v-container fluid>
+                <v-row style="align-items: center;justify-content: center" v-if="view === 1">
+                    <v-col cols="5">
+                        <v-card>
+                            <v-card-title>
+                                Load Cdr File
+                            </v-card-title>
+                            <v-card-text>
+                                <v-form @submit.prevent="sendFile">
+                                    <v-file-input
+                                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                            label="File input"
+                                            ref="myfile" v-model="form.file"
+                                    ></v-file-input>
+                                    <v-btn type="submit" :disabled="!form.file" :loading="loading">
+                                        Send
+                                    </v-btn>
+                                </v-form>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+                <v-row v-if="view === 2">
+                    <v-col md=4" v-for="item in items">
+                        <v-card>
+                            <v-card-title>
+                                Customer <b>{{ item.customer_id }}</b>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-list
+                                        subheader
+                                        two-line
+                                >
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-list-item-title>Number of customer's calls within same continent
+                                            </v-list-item-title>
+                                        </v-list-item-content>
+
+                                        <v-list-item-action>
+                                            <b> {{ item.calls_count_same_continent}} </b>
+                                        </v-list-item-action>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-list-item-title>Total duration of customer's calls within same continent
+                                            </v-list-item-title>
+                                        </v-list-item-content>
+
+                                        <v-list-item-action>
+                                            <b> {{ item.calls_duration_same_continent}} seconds</b>
+                                        </v-list-item-action>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-list-item-title>Number of all customer's calls
+                                            </v-list-item-title>
+                                        </v-list-item-content>
+
+                                        <v-list-item-action>
+                                            <b> {{ item.all_calls}} </b>
+                                        </v-list-item-action>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-list-item-title>
+                                                Total duration of all customer's calls
+                                            </v-list-item-title>
+                                        </v-list-item-content>
+
+                                        <v-list-item-action>
+                                            <b> {{ item.total_duration}} seconds </b>
+                                        </v-list-item-action>
+                                    </v-list-item>
+                                </v-list>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-main>
+    </v-app>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        vuetify: new Vuetify(),
+        data: function () {
+            return {
+                loading: false,
+                items: [],
+                view: 1,
+                form: {}
+            }
+        },
+        methods: {
+            sendFile() {
+                let formData = new FormData();
+                formData.append("file", this.form.file);
+                this.loading = true
+                axios
+                    .post('/cdr', formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    })
+                    .then((response) => {
+                        this.items = response.data.data
+                        this.view = 2
+                    })
+                .finally(() => {
+                    this.loading = false
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>
