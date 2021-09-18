@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Pool;
-use function GuzzleHttp\Promise\unwrap;
 
 class IpStackService
 {
@@ -32,7 +30,7 @@ class IpStackService
 
     public function request(string $data): array
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         $response = $client->get(sprintf($this->url, $data), [ 'query' => [ 'access_key' => $this->token ] ]);
         return json_decode($response->getBody()->getContents(), true);
     }

@@ -13,8 +13,5 @@ class CallIp
     {
         $this->ip = $ip;
         $this->continent = !is_null($ipStackModel) ? $ipStackModel->getContinentCode() : null;
-        if ($ip === '37.35.105.218') {
-            $this->continent = 'AF';//dd($ipStackModel);
-        }
     }
 }

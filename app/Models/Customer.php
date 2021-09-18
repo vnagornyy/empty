@@ -20,6 +20,16 @@ class Customer
         $this->calls = $calls;
     }
 
+    protected function callSameContinent(): \Tightenco\Collect\Support\Collection
+    {
+        return collect($this->calls)->filter(function (Call $item) {
+            if (is_null($item->phone->continent) || is_null($item->ip->continent)) {
+                return false;
+            }
+            return $item->phone->continent === $item->ip->continent;
+        });
+    }
+
     public function getAllCalls(): int
     {
         return count($this->calls);
@@ -32,28 +42,11 @@ class Customer
 
     public function getCallsCountSameContinent(): int
     {
-        return collect($this->calls)->filter(function (Call $item) {
-            if (is_null($item->phone->continent) || is_null($item->ip->continent)) {
-                return false;
-            }
-            return $item->phone->continent === $item->ip->continent;
-        })->count();
-    }
-
-    public function getCallsSameContinent(): int
-    {
-        return collect($this->calls)->filter(function (Call $item) {
-            if (is_null($item->phone->continent) || is_null($item->ip->continent)) {
-                return false;
-            }
-            return $item->phone->continent === $item->ip->continent;
-        })->count();
+        return $this->callSameContinent()->count();
     }
 
     public function getCallsDurationSameContinent(): int
     {
-        return collect($this->calls)->filter(function (Call $item) {
-            return $item->phone->continent === $item->ip->continent;
-        })->sum('duration');
+        return $this->callSameContinent()->sum('duration');
     }
 }

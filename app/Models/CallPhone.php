@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\GeoName\CountryInfo;
 use Brick\PhoneNumber\PhoneNumber;
+use Brick\PhoneNumber\PhoneNumberParseException;
 
 class CallPhone
 {
@@ -12,7 +13,7 @@ class CallPhone
     public ?string $continent = null;
 
     /**
-     * @throws \Brick\PhoneNumber\PhoneNumberParseException
+     * @throws PhoneNumberParseException
      */
     public function __construct(string $phone)
     {

@@ -12,13 +12,3 @@ if (!function_exists('dd')) {
         exit(1);
     }
 }
-
-
-if (!function_exists('responseJson')) {
-    function responseJson($data, $status = 500)
-    {
-        header("HTTP/1.1 ".$status." ".'OK');
-        echo json_encode($data);
-        die();
-    }
-}

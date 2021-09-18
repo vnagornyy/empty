@@ -12,8 +12,9 @@
     "guzzlehttp/guzzle": "^7.0",
     "vlucas/phpdotenv": "^5.3",
     "filp/whoops": "^2.14",
-    "illuminate/collections": "^8.61",
-    "pecee/simple-router": "4.3.7.2"
+    "pecee/simple-router": "4.3.7.2",
+    "tightenco/collect": "^8.34",
+    "ext-json": "*"
   },
   "autoload": {
     "files": [
