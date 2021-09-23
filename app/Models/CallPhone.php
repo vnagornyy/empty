@@ -18,9 +18,7 @@ class CallPhone
     {
         $this->phone = $phone;
         $number = PhoneNumber::parse('+'.$phone);
-        $this->countryCode = $number->getRegionCode();
-        if (!is_null($number->getRegionCode())) {
-            $this->continent = CountryInfo::getInstance()->getContinentByCountryCode($number->getRegionCode());
-        }
+        $this->countryCode = $number->getCountryCode();
+        $this->continent = CountryInfo::getInstance()->getContinentByCountryCode($this->countryCode);
     }
 }

@@ -23,7 +23,7 @@ class CountryInfo
 
     public function getContinentByCountryCode(string $code): ?string
     {
-        return collect($this->data)->where('country_code', $code)->first()['continent'] ?? null;
+        return collect($this->data)->where('phone', $code)->first()['continent'] ?? null;
     }
 
     protected function generateData()
