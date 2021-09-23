@@ -4,7 +4,7 @@ namespace App\Services;
 
 class IpStackModel
 {
-    protected $data;
+    protected array $data;
 
     /**
      * IpStackModel constructor.
@@ -17,6 +17,6 @@ class IpStackModel
 
     public function getContinentCode()
     {
-        return $this->data['continent_code'];
+        return $this->data['continent_code'] ?? null;
     }
 }

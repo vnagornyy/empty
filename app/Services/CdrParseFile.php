@@ -4,7 +4,7 @@ namespace App\Services;
 
 class CdrParseFile
 {
-    protected $filename;
+    protected string $filename;
 
     public function __construct($filename)
     {

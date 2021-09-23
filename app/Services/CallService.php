@@ -9,16 +9,16 @@ use App\Models\Customer;
 
 class CallService
 {
-    protected $data;
+    protected array $data;
     /**
      * @var IpStackService
      */
     protected IpStackService $ipStack;
 
-    public function __construct($data)
+    public function __construct(CdrParseFile $data)
     {
         $this->ipStack = new IpStackService();
-        $this->data = $data;
+        $this->data = $data->getData();
     }
 
     /**
